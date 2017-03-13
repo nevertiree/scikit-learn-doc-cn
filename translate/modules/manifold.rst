@@ -4,7 +4,7 @@
 .. _manifold:
 
 =========================
-流型学习Manifold learning
+流形学习Manifold learning
 =========================
 
 .. rst-class:: quote
@@ -25,10 +25,10 @@
    :align: center
    :scale: 60
 
-流型学习是一种非线性的降维方法，其各种算法致力于处理数据中高而无用的维度。
+流形学习是一种非线性的降维方法，其各种算法致力于处理数据中高而无用的维度。
 
-Introduction
-============
+简介
+====
 
 高维数据集通常难以可视化——二维或者三维的数据可以被绘制出来以展现其内部结构，但是更高维度的数据展示却太过于抽象。为了对数据集的结构进行可视化，数据的维度必须用某种方法降低。
 
@@ -57,7 +57,7 @@ Introduction
 
 .. centered:: |PCA_img| |LDA_img|
 
-流型学习可被看作线性框架（例如PCA）的一种泛化尝试，使这些框架可以适用于数据中非线性的结构。虽然流型学习中存在监督性的变量，但是典型的流型学习却是非监督的。它没有使用预先决定的分类，而是自学数据中的高维结构。
+流形学习可被看作线性框架（例如PCA）的一种泛化尝试，使这些框架可以适用于数据中非线性的结构。虽然流形学习中存在监督性的变量，但是典型的流形学习却是非监督的。它没有使用预先决定的分类，而是自学数据中的高维结构。
 
 .. topic:: Examples:
 
@@ -67,14 +67,14 @@ Introduction
     * See :ref:`example_manifold_plot_compare_methods.py` for an example of
       dimensionality reduction on a toy "S-curve" dataset.
 
-sklearn中可供使用的流型学习实现如下。
+sklearn中可供使用的流形学习实现如下。
 
 .. _isomap:
 
 等距特征映射 Isometric Feature Mapping
 =====================================
 
-Isomap是最易习得的流型学习算法之一。Isomap可以视为多维标度分析（multidimensional scaling ,MDS）或者核PCA在高维上的扩展。Isomap寻找一个更低维度的嵌入，这个嵌入保持了所有点之间的几何距离。Isomap可见于 :class:`Isomap` 。
+Isomap是最易习得的流形学习算法之一。Isomap可以视为多维标度分析（multidimensional scaling ,MDS）或者核PCA在高维上的扩展。Isomap寻找一个更低维度的嵌入，这个嵌入保持了所有点之间的几何距离。Isomap可见于 :class:`Isomap` 。
 
 .. figure:: ../auto_examples/manifold/images/plot_lle_digits_005.png
    :target: ../auto_examples/manifold/plot_lle_digits.html
@@ -82,7 +82,7 @@ Isomap是最易习得的流型学习算法之一。Isomap可以视为多维标�
    :scale: 50
 
 复杂度
-------
+-----
 Isomap算法由一下3步骤组成：
 
 1. **最近邻搜索.**  Isomap使用 :class:`sklearn.neighbors.BallTree` 完成高效率的近邻搜索，对于在 :math:`D` 维空间 :math:`N` 个数据点中的 :math: `k` 个最近邻而言，其开销约为 :math:`O[D \log(k) N \log(N)]` 。
@@ -110,44 +110,35 @@ Isomap算法由一下3步骤组成：
 
 .. _locally_linear_embedding:
 
-Locally Linear Embedding
-========================
+局部线性嵌入 Locally Linear Embedding
+=====================================
 
-Locally linear embedding (LLE) seeks a lower-dimensional projection of the data
-which preserves distances within local neighborhoods.  It can be thought
-of as a series of local Principal Component Analyses which are globally
-compared to find the best non-linear embedding.
+局部线性嵌入 (LLE)寻找一个能使数据保持与局部近邻点距离不变的低维投影。它可以看作一系列寻找全局最优非线性嵌入的局部PCA的组合。
 
-Locally linear embedding can be performed with function
-:func:`locally_linear_embedding` or its object-oriented counterpart
-:class:`LocallyLinearEmbedding`.
+LLE可以通过函数 :func:`locally_linear_embedding` 或者类 :class:`LocallyLinearEmbedding` 实现。
 
 .. figure:: ../auto_examples/manifold/images/plot_lle_digits_006.png
    :target: ../auto_examples/manifold/plot_lle_digits.html
    :align: center
    :scale: 50
 
-Complexity
-----------
+复杂度
+------
 
-The standard LLE algorithm comprises three stages:
+标准的LLE算法由以下3部分组成：
 
-1. **Nearest Neighbors Search**.  See discussion under Isomap above.
+1. **最近邻搜索**. 见上问对Isomap的讨论。
 
-2. **Weight Matrix Construction**. :math:`O[D N k^3]`.
-   The construction of the LLE weight matrix involves the solution of a
-   :math:`k \times k` linear equation for each of the :math:`N` local
-   neighborhoods
+2. **权重矩阵构造**. :math:`O[D N k^3]`.LLE权重矩阵包含着对 :math:`N` 个局部近邻的 :math:`k \times k` 线性方程的解。
 
-3. **Partial Eigenvalue Decomposition**. See discussion under Isomap above.
+3. **部分特征值分解**. 见上文对Isomap的讨论。
 
-The overall complexity of standard LLE is
-:math:`O[D \log(k) N \log(N)] + O[D N k^3] + O[d N^2]`.
+整个标准LLE的复杂度为 :math:`O[D \log(k) N \log(N)] + O[D N k^3] + O[d N^2]`.
 
-* :math:`N` : number of training data points
-* :math:`D` : input dimension
-* :math:`k` : number of nearest neighbors
-* :math:`d` : output dimension
+* :math:`N` : 训练集数据个数
+* :math:`D` : 输入数据维度
+* :math:`k` : 最近邻数量
+* :math:`d` : 输出数据维度
 
 .. topic:: References:
    
@@ -181,8 +172,8 @@ It requires ``n_neighbors > n_components``.
    :align: center
    :scale: 50
    
-Complexity
-----------
+复杂度
+-----
 
 The MLLE algorithm comprises three stages:
 
@@ -197,13 +188,13 @@ The MLLE algorithm comprises three stages:
 
 3. **Partial Eigenvalue Decomposition**. Same as standard LLE
 
-The overall complexity of MLLE is
+The overall 复杂度 of MLLE is
 :math:`O[D \log(k) N \log(N)] + O[D N k^3] + O[N (k-D) k^2] + O[d N^2]`.
 
-* :math:`N` : number of training data points
-* :math:`D` : input dimension
-* :math:`k` : number of nearest neighbors
-* :math:`d` : output dimension
+* :math:`N` : 训练集数据个数
+* :math:`D` : 输入数据维度
+* :math:`k` : 最近邻数量
+* :math:`d` : 输出数据维度
 
 .. topic:: References:
      
@@ -231,8 +222,8 @@ It requires ``n_neighbors > n_components * (n_components + 3) / 2``.
    :align: center
    :scale: 50
    
-Complexity
-----------
+复杂度
+-----
 
 The HLLE algorithm comprises three stages:
 
@@ -245,13 +236,13 @@ The HLLE algorithm comprises three stages:
 
 3. **Partial Eigenvalue Decomposition**. Same as standard LLE
 
-The overall complexity of standard HLLE is
+The overall 复杂度 of standard HLLE is
 :math:`O[D \log(k) N \log(N)] + O[D N k^3] + O[N d^6] + O[d N^2]`.
 
-* :math:`N` : number of training data points
-* :math:`D` : input dimension
-* :math:`k` : number of nearest neighbors
-* :math:`d` : output dimension
+* :math:`N` : 训练集数据个数
+* :math:`D` : 输入数据维度
+* :math:`k` : 最近邻数量
+* :math:`d` : 输出数据维度
 
 .. topic:: References:
 
@@ -275,8 +266,8 @@ preserving local distances. Spectral embedding can be  performed with the
 function :func:`spectral_embedding` or its object-oriented counterpart
 :class:`SpectralEmbedding`.
 
-Complexity
-----------
+复杂度
+-----
 
 The Spectral Embedding algorithm comprises three stages:
 
@@ -290,13 +281,13 @@ The Spectral Embedding algorithm comprises three stages:
 3. **Partial Eigenvalue Decomposition**. Eigenvalue decomposition is 
    done on graph Laplacian
 
-The overall complexity of spectral embedding is
+The overall 复杂度 of spectral embedding is
 :math:`O[D \log(k) N \log(N)] + O[D N k^3] + O[d N^2]`.
 
-* :math:`N` : number of training data points
-* :math:`D` : input dimension
-* :math:`k` : number of nearest neighbors
-* :math:`d` : output dimension
+* :math:`N` : 训练集数据个数
+* :math:`D` : 输入数据维度
+* :math:`k` : 最近邻数量
+* :math:`d` : 输出数据维度
 
 .. topic:: References:
 
@@ -323,8 +314,8 @@ tangent spaces to learn the embedding.  LTSA can be performed with function
    :align: center
    :scale: 50
 
-Complexity
-----------
+复杂度
+-----
 
 The LTSA algorithm comprises three stages:
 
@@ -336,13 +327,13 @@ The LTSA algorithm comprises three stages:
 
 3. **Partial Eigenvalue Decomposition**. Same as standard LLE
 
-The overall complexity of standard LTSA is
+The overall 复杂度 of standard LTSA is
 :math:`O[D \log(k) N \log(N)] + O[D N k^3] + O[k^2 d] + O[d N^2]`.
 
-* :math:`N` : number of training data points
-* :math:`D` : input dimension
-* :math:`k` : number of nearest neighbors
-* :math:`d` : output dimension
+* :math:`N` : 训练集数据个数
+* :math:`D` : 输入数据维度
+* :math:`k` : 最近邻数量
+* :math:`d` : 输出数据维度
 
 .. topic:: References:
 
@@ -520,7 +511,7 @@ The Barnes-Hut t-SNE that has been implemented here is usually much slower than
 other manifold learning algorithms. The optimization is quite difficult
 and the computation of the gradient is :math:`O[d N log(N)]`, where :math:`d`
 is the number of output dimensions and :math:`N` is the number of samples. The 
-Barnes-Hut method improves on the exact method where t-SNE complexity is 
+Barnes-Hut method improves on the exact method where t-SNE 复杂度 is 
 :math:`O[d N^2]`, but has several other notable differences:
 
 * The Barnes-Hut implementation only works when the target dimensionality is 3
