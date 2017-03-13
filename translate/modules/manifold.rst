@@ -146,26 +146,12 @@ LLE可以通过函数 :func:`locally_linear_embedding` 或者类 :class:`Locally
      <http://www.sciencemag.org/content/290/5500/2323.full>`_
      Roweis, S. & Saul, L.  Science 290:2323 (2000)
 
+改良局部线性嵌入Modified Locally Linear Embedding
+=================================================
 
-Modified Locally Linear Embedding
-=================================
+正则化是LLE的一个明显问题。当近邻数量大于输入数据的维数时，用于定义近邻的矩阵将秩亏。为此，标准LLE采用了一个任意的正则化参数 :math:`r` ,该值与局部权重矩阵的迹有关。虽然在形式上当math:`r \to 0` 时，该解会收敛于期望的嵌入，但并没有保证当 :math:`r > 0` 时有最优解。这个问题在一个扭曲流形底层几何的嵌入中体现。
 
-One well-known issue with LLE is the regularization problem.  When the number
-of neighbors is greater than the number of input dimensions, the matrix
-defining each local neighborhood is rank-deficient.  To address this, standard
-LLE applies an arbitrary regularization parameter :math:`r`, which is chosen
-relative to the trace of the local weight matrix.  Though it can be shown
-formally that as :math:`r \to 0`, the solution converges to the desired
-embedding, there is no guarantee that the optimal solution will be found
-for :math:`r > 0`.  This problem manifests itself in embeddings which distort
-the underlying geometry of the manifold.
-
-One method to address the regularization problem is to use multiple weight
-vectors in each neighborhood.  This is the essence of *modified locally
-linear embedding* (MLLE).  MLLE can be  performed with function
-:func:`locally_linear_embedding` or its object-oriented counterpart
-:class:`LocallyLinearEmbedding`, with the keyword ``method = 'modified'``.
-It requires ``n_neighbors > n_components``.
+一个处理正则化问题的方法是在每个近邻中使用多个权重向量。这就是*改良局部线性嵌入* (MLLE)的本质。MLLE可以在函数 :func:`locally_linear_embedding` 或者类 :class:`LocallyLinearEmbedding` 中使用，其中关键字 ``method = 'modified'`` 。它要求 ``n_neighbors > n_components`` 。
 
 .. figure:: ../auto_examples/manifold/images/plot_lle_digits_007.png
    :target: ../auto_examples/manifold/plot_lle_digits.html
@@ -173,23 +159,17 @@ It requires ``n_neighbors > n_components``.
    :scale: 50
    
 复杂度
------
+------
 
-The MLLE algorithm comprises three stages:
+改良局部线性嵌入由以下3个部分组成：
 
-1. **Nearest Neighbors Search**.  Same as standard LLE
+1. **最近邻搜寻**.  同标准LLE算法。
 
-2. **Weight Matrix Construction**. Approximately
-   :math:`O[D N k^3] + O[N (k-D) k^2]`.  The first term is exactly equivalent
-   to that of standard LLE.  The second term has to do with constructing the
-   weight matrix from multiple weights.  In practice, the added cost of 
-   constructing the MLLE weight matrix is relatively small compared to the
-   cost of steps 1 and 3.
+2. **权重矩阵构造**.约为 :math:`O[D N k^3] + O[N (k-D) k^2]` 。其中第一项和标准的LLE相同，第二项从多个权重值中构造权重矩阵。在实践中，因构造MLLE权重矩阵而增加的开销和步骤1和3相比显得非常小。
 
-3. **Partial Eigenvalue Decomposition**. Same as standard LLE
+3. **部分特征分解**. 同标准LLE算法。
 
-The overall 复杂度 of MLLE is
-:math:`O[D \log(k) N \log(N)] + O[D N k^3] + O[N (k-D) k^2] + O[d N^2]`.
+整个MLLE模型的复杂度为 :math:`O[D \log(k) N \log(N)] + O[D N k^3] + O[N (k-D) k^2] + O[d N^2]`.
 
 * :math:`N` : 训练集数据个数
 * :math:`D` : 输入数据维度
