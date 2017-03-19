@@ -537,23 +537,14 @@ the internal structure of the data.
     <http://lvdmaaten.github.io/publications/papers/JMLR_2014.pdf>`_
     L.J.P. van der Maaten.  Journal of Machine Learning Research 15(Oct):3221-3245, 2014.
 
-Tips on practical use
+实践技巧
 =====================
 
-* Make sure the same scale is used over all features. Because manifold
-  learning methods are based on a nearest-neighbor search, the algorithm
-  may perform poorly otherwise.  See :ref:`StandardScaler <preprocessing_scaler>`
-  for convenient ways of scaling heterogeneous data.
+* 确保对全部特征使用了相同的度量指标，因为流形学习是基于最近邻搜索的，所以如果没有统一的度量标准，算法的表现会非常的不理想。对不同的数据进行统一度量指标的方法亲详见 :ref:`StandardScaler <preprocessing_scaler>` 。
 
-* The reconstruction error computed by each routine can be used to choose
-  the optimal output dimension.  For a :math:`d`-dimensional manifold embedded
-  in a :math:`D`-dimensional parameter space, the reconstruction error will
-  decrease as ``n_components`` is increased until ``n_components == d``.
+* 由每一个步骤算出的重构误差，可用于选择最优输出维数。对于嵌入在D-维空间的d-维流形而言，重构误差会随着 ``n_components`` 的增加而减小，直至 ``n_components == d`` 。
 
-* Note that noisy data can "short-circuit" the manifold, in essence acting
-  as a bridge between parts of the manifold that would otherwise be
-  well-separated.  Manifold learning on noisy and/or incomplete data is
-  an active area of research.
+* 请注意噪声数据，特别是在流形的不同部分构成桥状相连的噪声数据，因为它会使流形学习出现短路。目前对嘈杂或者不完整的数据进行的流形学习是研究的热门。
 
 * Certain input configurations can lead to singular weight matrices, for
   example when more than two points in the dataset are identical, or when
